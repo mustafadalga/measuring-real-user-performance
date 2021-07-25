@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+   <head>
+      <meta charset="UTF-8">
+      <meta http-equiv="X-UA-Compatible" content="IE=edge">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <title>Measuring real user performance </title>
+   </head>
+   <body>
+      <script>
+         async function example1(){
+          const start = new Date().getTime();
+             for (let i = 1; i <= 10; i++) {
+             let response=     await fetch('https://jsonplaceholder.typicode.com/todos/'+i)
+             response=await response.json()
+             console.log(response)
+             }
+         
+             const end = new Date().getTime();
+             console.log(end - start);
+         }
+         
+         async function example2(){
+             console.time("doNothing");
+             for (let i = 1; i <=10; i++) {
+                 let response= await fetch('https://jsonplaceholder.typicode.com/todos/'+i)
+                     response=await response.json()
+                     console.log(response)
+             }
+             console.timeEnd("doNothing");
+         }
+         
+         async function example3(){
+             performance.mark("Start");
+             for (let i = 1; i <=10; i++) {
+                 let response=await fetch('https://jsonplaceholder.typicode.com/todos/'+i)
+                     response=await response.json()
+                     console.log(response)
+             }
+             performance.mark("End");
+             performance.measure("Frontend Masters Chrome Devtools", "Start", "End");
+             performance.getEntriesByType("measure");
+         }
+
+
+        //  example1()
+         example2()
+        //  example3()
+         
+         
+        // https://developer.mozilla.org/en-US/docs/Web/API/Performance
+         const resources = performance.getEntriesByType("resource");
+         const paints = performance.getEntriesByType("paint");
+         const navigations = performance.getEntriesByType("navigation");
+         
+         console.log("resources",resources)
+         console.log("paints",paints)
+         console.log("navigations",navigations)
+      </script>
+   </body>
+</html>
